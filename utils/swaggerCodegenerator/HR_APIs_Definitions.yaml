@@ -1,0 +1,177 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: HR Portal
+  description: APIs for HR Portal
+basePath: /api/v1
+paths:
+  /candidates:
+    post:
+      produces:
+        - application/json
+      summary: Adds new Candidate
+      description: Add a new dashBoard to the collection.
+      operationId: addCandidate
+      parameters:
+        - name: candidate
+          in: body
+          description: Candidate JSON Object
+          schema:
+            $ref: '#/definitions/Candidate'
+      responses:
+        '201':
+          description: Candidate created successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+    put:
+      produces:
+        - application/json
+      summary: Updates the exisiting candidate
+      description: Updates the exisiting candidate.
+      operationId: updateCandidate
+      parameters:
+        - name: candidate
+          in: body
+          description: Candidate JSON Object
+          schema:
+            $ref: '#/definitions/Candidate'
+      responses:
+        '200':
+          description: Candidate created successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+
+    get:
+      produces:
+        - application/json
+      summary: get all Candidate details
+      description: get all Candidates
+      operationId: getCandidates
+      parameters:
+        - name: candidateId
+          in: query
+          required: true
+          description: Candidate selected.
+          type: string
+      responses:
+        200:
+          description: Returns all Dashboard details. Response object will be list of Dashboard. Please refer DashboardMetadata model structure.
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Candidate'
+        500:
+          description: Error in fetching the Dashboards. Response object contains error message.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        400:
+          description: Bad request. Response object contains error message.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+
+
+    
+  '/candidates/{candidateId}':
+    get:
+      summary: Get Candidate by Id
+      description: Returns a Candidate
+      operationId: getCandidate
+      parameters:
+        - name: candidateId
+          in: path
+          required: true
+          description: Candidate's Id.
+          type: string
+      responses:
+        '200':
+          description: A Candidate
+          schema:
+            $ref: '#/definitions/Candidate'
+        '404':
+          description: The Candidate does not exists.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    delete:
+      summary: Delete the Candidate
+      description: Deletes Candidate
+      operationId: deleteCandidate
+      parameters:
+        - name: candidateId
+          in: path
+          required: true
+          description: Candidate's Id.
+          type: string
+      responses:
+        '200':
+          description: Deletion successful
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '404':
+          description: Candidate does not exists.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '500':
+          description: Error occured during the Dashboard deletion.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  
+  '/resumeupload':
+     post:
+       summary: Uploads a file.
+       consumes:
+         - multipart/form-data
+       parameters:
+         - in: formData
+           name: upfile
+           type: file
+           description: The file to upload.
+       responses:
+        '201':
+          description: Resume created successfully
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        '404':
+          description: The Candidate does not exists.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          
+
+definitions:
+
+  
+  Candidate:
+    type: object
+    properties:
+      name:
+        type: string
+      phoneNo:
+        type: string
+      email:
+        type: string
+      experience:
+        type: integer
+      noticePeriod:
+        type: string
+      passoutYear:
+        type: integer
+      resumeId:
+        type: string
+      source:
+        type: string
+        
+  ErrorResponse:
+    type: object
+    properties:
+      errorCode:
+        type: string
+      message:
+        type: string
+        
+  SuccessResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      
+    
+  

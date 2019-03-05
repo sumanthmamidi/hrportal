@@ -1,0 +1,14 @@
+{
+	"basePackage":"com.mp.hr",
+	"configPackage":"com.mp.hr.config",
+	"modelPackage":"com.mp.hr.model",
+	"apiPackage":"com.mp.hr.api",
+	"groupId":"com.mp.hr.webanalytics",
+	"artifactId":"hrportal-api-service",
+	"artifactVersion":"0.1",
+	"developerOrganization":"SELF",
+	"java8":true,
+	"hideGenerationTimestamp":true,
+	"serializableModel":true,
+	"dateLibrary":"java8"
+}
