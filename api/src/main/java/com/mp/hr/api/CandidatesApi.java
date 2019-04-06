@@ -105,7 +105,7 @@ public interface CandidatesApi {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"}", Candidate.class), HttpStatus.NOT_IMPLEMENTED);
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"id\" : \"id\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"}", Candidate.class), HttpStatus.NOT_IMPLEMENTED);
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -126,11 +126,11 @@ public interface CandidatesApi {
     @RequestMapping(value = "/candidates",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<Candidate>> getCandidates(@NotNull @ApiParam(value = "Candidate selected.", required = true) @Valid @RequestParam(value = "candidateId", required = true) String candidateId) {
+    default ResponseEntity<List<Candidate>> getCandidates() {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"}, {  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"id\" : \"id\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"}, {  \"noticePeriod\" : \"noticePeriod\",  \"passoutYear\" : 6,  \"resumeId\" : \"resumeId\",  \"name\" : \"name\",  \"id\" : \"id\",  \"source\" : \"source\",  \"experience\" : 0,  \"phoneNo\" : \"phoneNo\",  \"email\" : \"email\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

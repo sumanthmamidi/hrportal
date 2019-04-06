@@ -18,6 +18,9 @@ import javax.validation.constraints.*;
 public class Candidate  implements Serializable {
   private static final long serialVersionUID = 1L;
 
+  @JsonProperty("id")
+  private String id = null;
+
   @JsonProperty("name")
   private String name = null;
 
@@ -41,6 +44,26 @@ public class Candidate  implements Serializable {
 
   @JsonProperty("source")
   private String source = null;
+
+  public Candidate id(String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public Candidate name(String name) {
     this.name = name;
@@ -212,7 +235,8 @@ public class Candidate  implements Serializable {
       return false;
     }
     Candidate candidate = (Candidate) o;
-    return Objects.equals(this.name, candidate.name) &&
+    return Objects.equals(this.id, candidate.id) &&
+        Objects.equals(this.name, candidate.name) &&
         Objects.equals(this.phoneNo, candidate.phoneNo) &&
         Objects.equals(this.email, candidate.email) &&
         Objects.equals(this.experience, candidate.experience) &&
@@ -224,7 +248,7 @@ public class Candidate  implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, phoneNo, email, experience, noticePeriod, passoutYear, resumeId, source);
+    return Objects.hash(id, name, phoneNo, email, experience, noticePeriod, passoutYear, resumeId, source);
   }
 
   @Override
@@ -232,6 +256,7 @@ public class Candidate  implements Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append("class Candidate {\n");
     
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    phoneNo: ").append(toIndentedString(phoneNo)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");

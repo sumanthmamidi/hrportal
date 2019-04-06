@@ -47,12 +47,6 @@ paths:
       summary: get all Candidate details
       description: get all Candidates
       operationId: getCandidates
-      parameters:
-        - name: candidateId
-          in: query
-          required: true
-          description: Candidate selected.
-          type: string
       responses:
         200:
           description: Returns all Dashboard details. Response object will be list of Dashboard. Please refer DashboardMetadata model structure.
@@ -114,6 +108,8 @@ paths:
           description: Error occured during the Dashboard deletion.
           schema:
             $ref: '#/definitions/ErrorResponse'
+            
+  
   
   '/resumeupload':
      post:
@@ -129,7 +125,7 @@ paths:
         '201':
           description: Resume created successfully
           schema:
-            $ref: '#/definitions/SuccessResponse'
+            $ref: '#/definitions/Resume'
         '404':
           description: The Candidate does not exists.
           schema:
@@ -142,6 +138,8 @@ definitions:
   Candidate:
     type: object
     properties:
+      id:
+        type: string
       name:
         type: string
       phoneNo:
@@ -158,6 +156,15 @@ definitions:
         type: string
       source:
         type: string
+        
+  Resume:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      
         
   ErrorResponse:
     type: object

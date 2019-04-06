@@ -7,7 +7,7 @@ package com.mp.hr.api;
 
 import com.mp.hr.model.ErrorResponse;
 import java.io.File;
-import com.mp.hr.model.SuccessResponse;
+import com.mp.hr.model.Resume;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -48,18 +48,18 @@ public interface ResumeuploadApi {
         return getRequest().map(r -> r.getHeader("Accept"));
     }
 
-    @ApiOperation(value = "Uploads a file.", nickname = "resumeuploadPost", notes = "", response = SuccessResponse.class, tags={  })
+    @ApiOperation(value = "Uploads a file.", nickname = "resumeuploadPost", notes = "", response = Resume.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Resume created successfully", response = SuccessResponse.class),
+        @ApiResponse(code = 201, message = "Resume created successfully", response = Resume.class),
         @ApiResponse(code = 404, message = "The Candidate does not exists.", response = ErrorResponse.class) })
     @RequestMapping(value = "/resumeupload",
         consumes = { "multipart/form-data" },
         method = RequestMethod.POST)
-    default ResponseEntity<SuccessResponse> resumeuploadPost(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile upfile) {
+    default ResponseEntity<Resume> resumeuploadPost(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile upfile) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"id\" : \"id\"}", SuccessResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"name\" : \"name\",  \"id\" : \"id\"}", Resume.class), HttpStatus.NOT_IMPLEMENTED);
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

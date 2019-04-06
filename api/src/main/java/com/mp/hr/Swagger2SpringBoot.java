@@ -4,13 +4,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+
+import com.mp.hr.service.StorageProperties;
+import com.mp.hr.service.StorageService;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
 @ComponentScan(basePackages = { "com.mp.hr", "com.mp.hr.api" , "com.mp.hr.config"})
+@EnableConfigurationProperties(StorageProperties.class)
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
@@ -32,5 +38,13 @@ public class Swagger2SpringBoot implements CommandLineRunner {
             return 10;
         }
 
+    }
+    
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.deleteAll();
+            storageService.init();
+        };
     }
 }
