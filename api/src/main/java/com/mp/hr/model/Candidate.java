@@ -45,6 +45,12 @@ public class Candidate  implements Serializable {
   @JsonProperty("source")
   private String source = null;
 
+  @JsonProperty("salary")
+  private String salary = null;
+
+  @JsonProperty("company")
+  private String company = null;
+
   public Candidate id(String id) {
     this.id = id;
     return this;
@@ -225,6 +231,46 @@ public class Candidate  implements Serializable {
     this.source = source;
   }
 
+  public Candidate salary(String salary) {
+    this.salary = salary;
+    return this;
+  }
+
+  /**
+   * Get salary
+   * @return salary
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getSalary() {
+    return salary;
+  }
+
+  public void setSalary(String salary) {
+    this.salary = salary;
+  }
+
+  public Candidate company(String company) {
+    this.company = company;
+    return this;
+  }
+
+  /**
+   * Get company
+   * @return company
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public String getCompany() {
+    return company;
+  }
+
+  public void setCompany(String company) {
+    this.company = company;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -243,12 +289,14 @@ public class Candidate  implements Serializable {
         Objects.equals(this.noticePeriod, candidate.noticePeriod) &&
         Objects.equals(this.passoutYear, candidate.passoutYear) &&
         Objects.equals(this.resumeId, candidate.resumeId) &&
-        Objects.equals(this.source, candidate.source);
+        Objects.equals(this.source, candidate.source) &&
+        Objects.equals(this.salary, candidate.salary) &&
+        Objects.equals(this.company, candidate.company);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, phoneNo, email, experience, noticePeriod, passoutYear, resumeId, source);
+    return Objects.hash(id, name, phoneNo, email, experience, noticePeriod, passoutYear, resumeId, source, salary, company);
   }
 
   @Override
@@ -265,6 +313,8 @@ public class Candidate  implements Serializable {
     sb.append("    passoutYear: ").append(toIndentedString(passoutYear)).append("\n");
     sb.append("    resumeId: ").append(toIndentedString(resumeId)).append("\n");
     sb.append("    source: ").append(toIndentedString(source)).append("\n");
+    sb.append("    salary: ").append(toIndentedString(salary)).append("\n");
+    sb.append("    company: ").append(toIndentedString(company)).append("\n");
     sb.append("}");
     return sb.toString();
   }

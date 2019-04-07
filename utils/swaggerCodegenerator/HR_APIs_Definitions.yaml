@@ -156,6 +156,10 @@ definitions:
         type: string
       source:
         type: string
+      salary:
+        type: string
+      company:
+        type: string
         
   Resume:
     type: object

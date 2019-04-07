@@ -1,10 +1,22 @@
+# React Material UI template - Material Sense
+A full simple application for react material ui
+
+## Features
+- Responsive
+- Include a Graph using [recharts](https://github.com/recharts/recharts)
+- With [Router](https://github.com/ReactTraining/react-router) included
+- A docker container for production build
+- Created with [Create react app](https://github.com/facebook/create-react-app)
+
+![Dashboard](screenshot-dashboard.png)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `yarn start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -43,26 +55,23 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### Docker
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+This project works in a docker container as well
 
-### Analyzing the Bundle Size
+First run:
+`docker build . -t material-sense`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Then:
+`docker run -p 2222:2222 material-sense`
 
-### Making a Progressive Web App
+_the 2222 port intend to make work on Azure websites as container for default, cause is the port they use to expose the server_
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### Publish at Github pages
+`yarn deploy`
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Screenshots
+![Dashboard](screenshot-dashboard.png)
+![Signup](screenshot-signup.png)
+![Wizard](screenshot-wizard.png)
+![Cards](screenshot-cards.png)
