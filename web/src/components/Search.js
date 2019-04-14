@@ -4,6 +4,8 @@ import { CssBaseline, TextField, Typography, Button, Paper, Table, TableHead, Ta
 import Topbar from './Topbar';
 import { withRouter, Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
+import PreviewDialog from './dialogs/PreviewDialog';
+
 
 const backgroundShape = require('../images/shape.svg');
 const styles = theme => ({
@@ -24,7 +26,7 @@ const styles = theme => ({
     topBar: {
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'right'
     },
     block: {
         padding: theme.spacing.unit * 2,
@@ -54,6 +56,12 @@ const styles = theme => ({
         width: 152,
         height: 36
     },
+    uploadButton: {
+        textTransform: 'uppercase',
+        margin: theme.spacing.unit,
+        width: 250,
+        height: 36
+    },
     table: {
         minWidth: 700,
     },
@@ -72,6 +80,7 @@ function createData(name, company, experience, salary) {
 // ];
 
 class Search extends Component {
+
     state = {
         experience: 0,
         skills: "",
@@ -79,8 +88,26 @@ class Search extends Component {
         name: "",
         phoneNo: "",
         email: "",
-        rows: []
+        source: "",
+        salary: 0,
+        company: "",
+        noticePeriod: "",
+        resumeId: "",
+
+        rows: [],
+
+        previewDialog: false,
+        uploadState: ""
+        
     };
+
+    onClosePreviewDialog = event => {
+        this.setState({previewDialog: false});
+    }
+
+    openPreviewDialog = event => {
+        this.setState({previewDialog: true});
+    }
 
     handleChange = name => event => {
         this.setState({
@@ -111,6 +138,30 @@ class Search extends Component {
         )
         this.updateSearchResults();
     }
+
+    handleResumeUpload = (event) => {
+        var file = event.target.files[0];
+        var formData = new FormData();
+
+        formData.append("file", file);
+        
+        var url = "http://localhost:9090/api/v1/resumeupload";
+        var xhr = new XMLHttpRequest();
+        xhr.open('post', url, true);
+        //xhr.setRequestHeader("Content-Type","multipart/form-data");
+        xhr.send(formData);
+        var that = this;
+        xhr.onreadystatechange = function(e) {
+            if ( 4 == this.readyState ) {
+                that.setState({uploadState: "Upload success!"})
+                that.onUploadSuccess(this.response);
+            }
+        };
+    }
+
+    onUploadSuccess(response) {
+        this.setState({"resumeid":response.id});
+    }
     updateSearchResults(){
         const { experience, skills, passoutYear, name,
             phoneNo, email } = this.state;
@@ -139,7 +190,7 @@ class Search extends Component {
                                         </Typography>
                                     </div>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} xl={12}>
                                 
                                     <TextField
                                         id="tf-search-name"
@@ -170,8 +221,6 @@ class Search extends Component {
                                         margin="normal"
                                         variant="outlined"
                                     />
-                            </Grid>
-                            <Grid item xs={12} xl={4}>
                                     <TextField
                                         id="tf-search-exp"
                                         label="Experience (Years)"
@@ -199,13 +248,71 @@ class Search extends Component {
                                         margin="normal"
                                         variant="outlined"
                                     />
+                                    <TextField
+                                        id="tf-search-sal"
+                                        label="Salary"
+                                        className={classes.textField}
+                                        value={this.state.salary}
+                                        onChange={this.handleChange('salary')}
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        id="tf-search-company"
+                                        label="Company"
+                                        className={classes.textField}
+                                        value={this.state.company}
+                                        onChange={this.handleChange('company')}
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        id="tf-search-noticePeriod"
+                                        label="Notice period"
+                                        className={classes.textField}
+                                        value={this.state.noticePeriod}
+                                        onChange={this.handleChange('noticePeriod')}
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        id="tf-search-source"
+                                        label="Source"
+                                        className={classes.textField}
+                                        value={this.state.source}
+                                        onChange={this.handleChange('source')}
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
                             </Grid>
                             <Grid item xs={12} md={6}>
+                            <div className={classes.topBar}>
+                                <div className={classes.block}>
+                                    <Typography variant="body1">
+                                        Resume:
+                                    </Typography>
+                                 </div>
+                                <div>
+                                    <Button onClick={this.handleAdd} variant="contained"  color='primary' className={classes.uploadButton} label='Add'>
+                                    <input type="file" onChange={this.handleResumeUpload}/>
+                                    </Button>
+                                    <Typography variant="body1">
+                                        {this.state.uploadState}
+                                    </Typography>
+                                </div>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} md={7}>
                                 <div className={classes.topBar}>
                                 <div className={classes.block}>
                                     <Typography variant="body1">
                                     Once filters are selected, Click on search
                                     </Typography>
+                                </div>
+                                <div>
+                                    <Button onClick={this.openPreviewDialog} variant="contained"  color='primary' className={classes.actionButton}>
+                                    Add
+                                    </Button>
                                 </div>
                                 <div>
                                     <Button onClick={this.handleSearch} variant="contained"  color='primary' className={classes.actionButton}>
@@ -248,7 +355,10 @@ class Search extends Component {
                         </Grid>
                     </Grid>
                     
-                    
+                    <PreviewDialog
+                        open={this.state.previewDialog}
+                        onClose={this.onClosePreviewDialog}
+                        candidate={this.state}/>
                 </div>
 
             </React.Fragment>

@@ -20,6 +20,10 @@ const styles = theme => ({
 });
 
 class BaseDialog extends Component {
+  state = {
+    open: true
+  }
+
   render() {
     const { classes, open, onClose } = this.props;
     return (
