@@ -2,7 +2,9 @@ package com.mp.hr.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mp.hr.dao.CandidateRepository;
+import com.mp.hr.dao.ResumeRepository;
 import com.mp.hr.model.Candidate;
+import com.mp.hr.model.Resume;
 import com.mp.hr.model.SuccessResponse;
 
 import io.swagger.annotations.ApiParam;
@@ -34,6 +36,9 @@ public class CandidatesApiController implements CandidatesApi {
     
     @Autowired
     private CandidateRepository candidateRepository;
+    
+    @Autowired
+    private ResumeRepository resumeRepository;
 
     @org.springframework.beans.factory.annotation.Autowired
     public CandidatesApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -88,6 +93,7 @@ public class CandidatesApiController implements CandidatesApi {
     
     public ResponseEntity<Candidate> getCandidate(@ApiParam(value = "Candidate's Id.",required=true) @PathVariable("candidateId") String candidateId) {
     	Candidate candidate = candidateRepository.findOne(candidateId);
+    	
     	
     	return new ResponseEntity<Candidate>(candidate, HttpStatus.OK);
     }

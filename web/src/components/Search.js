@@ -5,6 +5,7 @@ import Topbar from './Topbar';
 import { withRouter, Link } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PreviewDialog from './dialogs/PreviewDialog';
+import CandidateDialog from './dialogs/CandidateDialog';
 
 
 const backgroundShape = require('../images/shape.svg');
@@ -97,12 +98,18 @@ class Search extends Component {
         rows: [],
 
         previewDialog: false,
-        uploadState: ""
+        candidateDialog: false,
+        uploadState: "",
+        rowOpen: {}
         
     };
 
     onClosePreviewDialog = event => {
         this.setState({previewDialog: false});
+    }
+
+    onCloseCandidateDialog = event => {
+        this.setState({candidateDialog: false});
     }
 
     openPreviewDialog = event => {
@@ -139,13 +146,19 @@ class Search extends Component {
         this.updateSearchResults();
     }
 
+    openCandidate = (event, row) => {
+        console.log(row.id);
+        this.state.rowOpen = row;
+        this.setState({candidateDialog: true});
+    }
+
     handleResumeUpload = (event) => {
         var file = event.target.files[0];
         var formData = new FormData();
-
+        debugger;
         formData.append("file", file);
         
-        var url = "http://localhost:9090/api/v1/resumeupload";
+        var url = "http://localhost:9090/api/v1/resume";
         var xhr = new XMLHttpRequest();
         xhr.open('post', url, true);
         //xhr.setRequestHeader("Content-Type","multipart/form-data");
@@ -159,8 +172,9 @@ class Search extends Component {
         };
     }
 
-    onUploadSuccess(response) {
-        this.setState({"resumeid":response.id});
+    onUploadSuccess = response => {
+        var resume = JSON.parse(response);
+        this.setState({"resumeId":resume.id});
     }
     updateSearchResults(){
         const { experience, skills, passoutYear, name,
@@ -339,7 +353,10 @@ class Search extends Component {
                                 </TableHead>
                                 <TableBody>
                                     {this.state.rows.map(row => (
-                                        <TableRow key={row.id}>
+                                        <TableRow 
+                                        hover
+                                        onClick = {event => this.openCandidate(event, row)}
+                                        key={row.id}>
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
@@ -359,6 +376,12 @@ class Search extends Component {
                         open={this.state.previewDialog}
                         onClose={this.onClosePreviewDialog}
                         candidate={this.state}/>
+
+                    <CandidateDialog
+                        open={this.state.candidateDialog}
+                        onClose={this.onCloseCandidateDialog}
+                        candidate={this.state.rowOpen}
+                    />
                 </div>
 
             </React.Fragment>

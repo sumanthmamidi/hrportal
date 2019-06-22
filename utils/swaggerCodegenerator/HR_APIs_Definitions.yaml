@@ -108,11 +108,10 @@ paths:
           description: Error occured during the Dashboard deletion.
           schema:
             $ref: '#/definitions/ErrorResponse'
-            
+        
   
-  
-  '/resumeupload':
-     post:
+  '/resume':
+    post:
        summary: Uploads a file.
        consumes:
          - multipart/form-data
@@ -130,6 +129,27 @@ paths:
           description: The Candidate does not exists.
           schema:
             $ref: '#/definitions/ErrorResponse'
+     
+  '/resume/{resumeId}':
+    get:
+        summary: Get Resume by Id
+        description: Returns a Resume
+        operationId: getResume
+        parameters:
+          - name: resumeId
+            in: path
+            required: true
+            description: Resume's Id.
+            type: string
+        responses:
+          '200':
+            description: A Resume
+            schema:
+              $ref: '#/definitions/Resume'
+          '404':
+            description: The Resume does not exists.
+            schema:
+              $ref: '#/definitions/ErrorResponse'
           
 
 definitions:

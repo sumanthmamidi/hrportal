@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import BaseDialog from './BaseDialog';
 import { Paper, Snackbar, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import CandidateItem from '../cards/CandidateItem';
 
 const styles = theme => ({
   container: {
@@ -54,17 +55,6 @@ const styles = theme => ({
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0
     }
-  },
-  inlineRight: {
-    width: '30%',
-    textAlign: 'right',
-    marginLeft: 50,
-    alignSelf: 'flex-end',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-      margin: 0,
-      textAlign: 'center'
-    }
   }
 
 });
@@ -81,6 +71,7 @@ class PreviewDialog extends Component {
  
   addCandidate = event => {
       var candidate = this.props.candidate;
+      console.log("candidateSaved:"+JSON.stringify(candidate));
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://localhost:9090/api/v1/candidates");
       xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -98,67 +89,7 @@ class PreviewDialog extends Component {
     this.state.candidate = this.props.candidate;
     return (
       <BaseDialog {...this.props}>
-        <div className={classes.bottomMargin}>
-            <Paper className={classes.paper}>
-            <div className={classes.itemContainer}>
-                
-                <div className={classes.baseline}>
-                <div>
-                <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Name
-                </Typography>
-                <Typography variant="h4" gutterBottom>
-                    {this.props.candidate.name}
-                </Typography>
-                </div>
-
-                
-                <div className={classes.inline}>
-                    <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Email
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                    {this.props.candidate.email}
-                    </Typography>
-                </div>
-                <div className={classes.inline}>
-                    <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Phone
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                    {this.props.candidate.phoneNo}
-                    </Typography>
-                </div>
-                <div className={classes.inline}>
-                    <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Experience
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                    {this.props.candidate.experience} years
-                    </Typography>
-                </div>
-                <div className={classes.inline}>
-                    <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Skills
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                    {this.props.candidate.skills}
-                    </Typography>
-                </div>
-                <div className={classes.inline}>
-                    <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                    Year of passout
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                    {this.props.candidate.passoutYear}
-                    </Typography>
-                </div>
-                </div>
-                
-                
-            </div>
-            </Paper>
-        </div>
+        <CandidateItem {...this.props}/>
         <Button onClick={this.addCandidate} className={classes.bottomMargin} variant='contained' color="primary" autoFocus>
           Confirm
         </Button>

@@ -31,10 +31,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@Api(value = "resumeupload", description = "the resumeupload API")
-public interface ResumeuploadApi {
+@Api(value = "resume", description = "the resume API")
+public interface ResumeApi {
 
-    Logger log = LoggerFactory.getLogger(ResumeuploadApi.class);
+    Logger log = LoggerFactory.getLogger(ResumeApi.class);
 
     default Optional<ObjectMapper> getObjectMapper() {
         return Optional.empty();
@@ -48,14 +48,13 @@ public interface ResumeuploadApi {
         return getRequest().map(r -> r.getHeader("Accept"));
     }
 
-    @ApiOperation(value = "Uploads a file.", nickname = "resumeuploadPost", notes = "", response = Resume.class, tags={  })
+    @ApiOperation(value = "Get Resume by Id", nickname = "getResume", notes = "Returns a Resume", response = Resume.class, tags={  })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Resume created successfully", response = Resume.class),
-        @ApiResponse(code = 404, message = "The Candidate does not exists.", response = ErrorResponse.class) })
-    @RequestMapping(value = "/resumeupload",
-        consumes = { "multipart/form-data" },
-        method = RequestMethod.POST)
-    default ResponseEntity<Resume> resumeuploadPost(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile upfile) {
+        @ApiResponse(code = 200, message = "A Resume", response = Resume.class),
+        @ApiResponse(code = 404, message = "The Resume does not exists.", response = ErrorResponse.class) })
+    @RequestMapping(value = "/resume/{resumeId}",
+        method = RequestMethod.GET)
+    default ResponseEntity<Resume> getResume(@ApiParam(value = "Resume's Id.",required=true) @PathVariable("resumeId") String resumeId) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -66,7 +65,31 @@ public interface ResumeuploadApi {
                 }
             }
         } else {
-            log.warn("ObjectMapper or HttpServletRequest not configured in default ResumeuploadApi interface so no example is generated");
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ResumeApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
+    @ApiOperation(value = "Uploads a file.", nickname = "resumePost", notes = "", response = Resume.class, tags={  })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "Resume created successfully", response = Resume.class),
+        @ApiResponse(code = 404, message = "The Candidate does not exists.", response = ErrorResponse.class) })
+    @RequestMapping(value = "/resume",
+        consumes = { "multipart/form-data" },
+        method = RequestMethod.POST)
+    default ResponseEntity<Resume> resumePost(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile upfile) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"name\" : \"name\",  \"id\" : \"id\"}", Resume.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ResumeApi interface so no example is generated");
         }
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
